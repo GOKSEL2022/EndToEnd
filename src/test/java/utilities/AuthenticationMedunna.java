@@ -11,6 +11,7 @@ import static io.restassured.RestAssured.given;
 
 public class AuthenticationMedunna {
 
+
     public static String generateToken(){
 
         Map<String, Object> bodyMap = new HashMap<>();
@@ -18,7 +19,17 @@ public class AuthenticationMedunna {
         bodyMap.put("rememberMe",true);
         bodyMap.put("username","batch_yuzuc");
 
-        Response response = given().contentType(ContentType.JSON).body(bodyMap).post("https://medunna.com/api/authenticate");
+        Response response = given().contentType(ContentType.JSON).body(bodyMap).
+                post("https://medunna.com/api/authenticate");
         return  response.jsonPath().getString("id_token");
+    }
+    public static String generateToken(String password,String username) {
+        String url="http://164.92.252.42:8080/auth/login";
+        Map<String, Object>token=new HashMap<>();
+        token.put( "password", password);
+        token.put("username", username);
+        Response response=given().contentType(ContentType.JSON).body(token).post(url);
+        response.prettyPrint();
+        return response.jsonPath().getString("token");
     }
 }
